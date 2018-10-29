@@ -79,7 +79,7 @@ class Forminator_Submissions_Dash_Widget {
 	}
 
 	/**
-	 * Add perquisites if needed
+	 * Add prerequisites if needed
 	 */
 	public function __construct() {
 	}
