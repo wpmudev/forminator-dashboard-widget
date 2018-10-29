@@ -7,59 +7,60 @@
  * Author: WPMU DEV
  * Author URI: http://premium.wpmudev.org
  */
+
 /*
-   This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-// It is a good practice to make sure plugin only runs when all conditions for successful run are satisfied. 
-// For this we use `forminator_loaded` action and only set up our plugin if that action is called
+// It is a good practice to make sure plugin only runs when all conditions for successful run are satisfied.
+// For this we use `forminator_loaded` action and only set up our plugin if that action is called.
 add_action( 'forminator_loaded', 'forminator_dash_widget' );
 
 function forminator_dash_widget() {
-	// Widget should be added after `wp_dashboard_setup` hook called
+	// Widget should be added after `wp_dashboard_setup` hook called.
 	add_action( 'wp_dashboard_setup', 'add_forminator_dash_widget' );
 }
 
 function add_forminator_dash_widget() {
-	// Instantiate Forminator_Submissions_Dash_Widget class
+	// Instantiate Forminator_Submissions_Dash_Widget class.
 	$widget = Forminator_Submissions_Dash_Widget::get_instance();
 	$widget->register_widget();
 }
 
 /**
- * Class Forminator_Submissions_Dash_Widget
+ * Class Forminator_Submissions_Dash_Widget.
  *
  */
 class Forminator_Submissions_Dash_Widget {
 
 	/**
 	 * Class instance
-	 * 
+	 *
 	 * @var null|Forminator_Submissions_Dash_Widget
 	 */
 	private static $instance = null;
 
 	/**
 	 * Form ID
-	 * 
+	 *
 	 * @var null|int
 	 */
 	private $id = null;
 
 	/**
 	 * Number of submissions
-	 * 
+	 *
 	 * @var int
 	 */
 	private $limit = 5;
@@ -129,7 +130,7 @@ class Forminator_Submissions_Dash_Widget {
 
 			$this->id    = $options['id'];
 			$this->limit = $options['limit'];
-			
+
 			// Get submissions
 			$this->get_submissions();
 		}
@@ -207,22 +208,6 @@ class Forminator_Submissions_Dash_Widget {
 		$forminator_options = ( isset( $opts[ __CLASS__ ] ) ) ? $opts[ __CLASS__ ] : $default;
 
 		return $forminator_options;
-	}
-
-	/**
-	 * Reset widget Options
-	 *
-	 * @return bool
-	 */
-	public function reset_options() {
-		//Fetch ALL dashboard widget options from the db...
-		$opts = get_option( 'dashboard_widget_options' );
-
-		//Get just our widget's options, or set default
-		unset( $opts[ __CLASS__ ] );
-
-		// update option
-		return update_option( 'dashboard_widget_options', $opts );
 	}
 
 	/**
@@ -305,7 +290,7 @@ class Forminator_Submissions_Dash_Widget {
 					<td class="id"><?php echo esc_html( $entry->entry_id ); ?></td>
 					<td class="entry">
 						<ul>
-							<?php foreach ( $entry->meta_data as $field_id => $meta ): ?>
+							<?php foreach ( $entry->meta_data as $field_id => $meta ) : ?>
 								<?php if ( isset( $field_labels[ $field_id ] ) ) : // only display entry with field label exist ?>
 									<?php $field_value = $meta['value']; ?>
 									<li>
@@ -314,7 +299,7 @@ class Forminator_Submissions_Dash_Widget {
 											<?php foreach ( $field_value as $key => $val ) : ?>
 												<?php echo esc_html( $key ); ?>: <?php echo esc_html( $val ); ?><br/>
 											<?php endforeach; ?>
-										<?php else: ?>
+										<?php else : ?>
 											<?php echo esc_html( $field_value ); ?>
 										<?php endif; ?>
 									</li>
@@ -336,7 +321,7 @@ class Forminator_Submissions_Dash_Widget {
 			</tr>
 			</tfoot>
 		</table>
-		<?php if ( ! is_null( $form ) ): ?>
+		<?php if ( ! is_null( $form ) ) : ?>
 			<ul class="">
 				<li class="all">
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=forminator-entries&form_type=forminator_forms&form_id=' . $form->id ) ); ?>"><?php esc_html_e( 'View Submissions' ); ?>
